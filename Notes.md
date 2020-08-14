@@ -4,15 +4,21 @@
   2. Visualizing Time Series
   3. Data Preprocessing
   4. Data Partitioning
-  5. Forecast Methods<br>
-      5.1 Naive Forecast<br>
-      5.2 Moving Average<br>
-      5.3 Exponential Smoothing<br>
-          5.3.1 Simple Exponential Smoothing(SES)<br>
-          5.3.2 Holt's Exponential Smoothing<br>
-          5.3.3 Holt-Winter's Exponential Smoothing<br>
-      5.4 Regression<br>
-          
+  5. Forecasting and Evaluation
+      1. Naive Forecast
+      2. Time Series
+          1. Moving Average(MA)
+          2. Autoregression(AR)
+          3. Autoregressive Moving Average(ARMA)
+          4. Autoregressive Integrated Moving Average(ARIMA)
+      3. Exponential Smoothing
+          1. Simple Exponential Smoothing(SES)
+          2. Holt's Exponential Smoothing
+          3. Holt-Winter's Exponential Smoothing
+      4. Regression
+          1. Linear Regression
+          2. Exponential Regression
+          3. Polynomial Regression
 
 <br>
 <br>
