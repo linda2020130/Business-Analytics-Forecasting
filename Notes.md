@@ -1,11 +1,11 @@
 # Data Analysis in Time Series
 
   1. [Time Series Components](#components)
-  2. Visualizing Time Series
-  3. Data Preprocessing
-  4. Data Partitioning
-  5. Forecasting and Evaluation
-      1. Naive Forecast
+  2. [Visualizing Time Series](#visualizing)
+  3. [Data Preprocessing](#preprocessing)
+  4. [Data Partitioning](#partitioning)
+  5. [Forecasting and Evaluation](#forecasting)
+      1. [Naive Forecast](#naive)
       2. Time Series
           1. Moving Average(MA)
           2. Autoregression(AR)
@@ -23,7 +23,7 @@
 <br>
 <br>
 
-<h2 id="components"> 1. Time Series Components</h2>
+<h2 id="components">1. Time Series Components</h2>
 1. Systematic part:
     * **level**: the average value of the series
     * **trend**: change in the series from one period to the next
@@ -48,7 +48,7 @@ yt = Level * Trend * Seasonality * Noise
 
 <br>
 
-## 2. Visualizing Time Series
+<h2 id="visualizing">2. Visualizing Time Series</h2>
 
 1. **Simplest form**: A line chart of the series **values** `y1, y2, ...` over **time** `t = 1, 2, ...` with temporal labels (e.g. calendar date) on the horizontal axis.
 2. **Zooming in**: To a **shorter** period within thr series can reveal patterns.
@@ -62,7 +62,7 @@ yt = Level * Trend * Seasonality * Noise
 
 <br >
 
-## 3. Data Preprocessing
+<h2 id="preprocessing">3. Data Preprocessing</h2>
 
 1. **Missing values**: 
     * Imputation approach:
@@ -82,7 +82,7 @@ yt = Level * Trend * Seasonality * Noise
 
 <br>
 
-## 4. Data Partitioning
+<h2 id="partitioning">4. Data Partitioning</h2>
 
 1. Split the data into **training** `t = 1, 2, ..., n` and **validation** `t = n+1, n+2, ...`sets to avoid overfitting.
 2. Select the model with minimal error on the validation set.
@@ -96,9 +96,9 @@ yt = Level * Trend * Seasonality * Noise
 
 <br >
 
-## 5. Forecasting and Evaluation
+<h2 id="forecasting">5. Forecasting and Evaluation</h2>
 
-### Naive Forecast
+<h3 id="naive">i. Naive Forecast</h3>
 
 
 
