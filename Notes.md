@@ -100,5 +100,19 @@ yt = Level * Trend * Seasonality * Noise
 
 <h3 id="naive">i. Naive Forecast</h3>
 
+* Naive Forecast is simple and often accurate for short forecasting horizons.
+* We should always compute them as a **benchmark** for comparison against other more complex forecasting models.
+
+1. **No seasonality**: Use lastest value to forecast "all" future forecasting values. `F_t+k = yt`
+2. **With seasonality**: Use last season's value to forecast future season. `F_t+k = y_t-M+k`
+
+### Evaluation
+
+It is recommended to use **charts** to evaluate how the model performs on both *training period* and *validation period*.
+1. Actual values and forecasting values vs time periods(training + validation)
+2. Forecasting errors vs time periods
+
+
+
 
 
