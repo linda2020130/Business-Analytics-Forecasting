@@ -1,6 +1,6 @@
 # Data Analysis in Time Series
 
-  1. Time Series Components
+  1. [Time Series Components](#components)
   2. Visualizing Time Series
   3. Data Preprocessing
   4. Data Partitioning
@@ -23,7 +23,7 @@
 <br>
 <br>
 
-## Time Series Components
+<h2 id="components"> 1. Time Series Components</h2>
 1. Systematic part:
     * **level**: the average value of the series
     * **trend**: change in the series from one period to the next
@@ -48,7 +48,7 @@ yt = Level * Trend * Seasonality * Noise
 
 <br>
 
-## Visualizing Time Series
+## 2. Visualizing Time Series
 
 1. **Simplest form**: A line chart of the series **values** `y1, y2, ...` over **time** `t = 1, 2, ...` with temporal labels (e.g. calendar date) on the horizontal axis.
 2. **Zooming in**: To a **shorter** period within thr series can reveal patterns.
@@ -62,7 +62,7 @@ yt = Level * Trend * Seasonality * Noise
 
 <br >
 
-## Data Preprocessing
+## 3. Data Preprocessing
 
 1. **Missing values**: 
     * Imputation approach:
@@ -82,7 +82,7 @@ yt = Level * Trend * Seasonality * Noise
 
 <br>
 
-## Data Partitioning
+## 4. Data Partitioning
 
 1. Split the data into **training** `t = 1, 2, ..., n` and **validation** `t = n+1, n+2, ...`sets to avoid overfitting.
 2. Select the model with minimal error on the validation set.
@@ -96,7 +96,9 @@ yt = Level * Trend * Seasonality * Noise
 
 <br >
 
-## Forecasting and Evaluation
+## 5. Forecasting and Evaluation
+
+### Naive Forecast
 
 
 
