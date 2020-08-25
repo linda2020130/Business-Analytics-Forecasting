@@ -6,8 +6,8 @@
   4. [Data Partitioning](#partitioning)
   5. [Forecasting and Evaluation](#forecasting)
       1. [Naive Forecast](#naive)
-      2. Time Series
-          1. Moving Average(MA)
+      2. [Time Series](#timeseries)
+          1. [Moving Average(MA)](#MA)
           2. Autoregression(AR)
           3. Autoregressive Moving Average(ARMA)
           4. Autoregressive Integrated Moving Average(ARIMA)
@@ -79,6 +79,12 @@ yt = Level * Trend * Seasonality * Noise
     * Concerns:
         1. Too short: limit of data information.
         2. Too long: scenario/situation may change a lot when time span is long.
+5. **Differencing**:
+    * Difference of two time periods in the time series; to remove trend and/or seasonality from a series.
+    * Types of Differencing:
+        1. **Lag-1 differencing**(De-Trending): useful for removing trend. (May apply twice if the trend is exponential)
+        2. **Lag-M differencing**(Deseasonalizing): useful for removing seasonality with M seasons. 
+        3. **Double-Differencing**: perform the differencing operation twice(difference the differenced series). (e.g. Lag-M first, then Lag-1)
 
 <br>
 
@@ -103,14 +109,77 @@ yt = Level * Trend * Seasonality * Noise
 * Naive Forecast is simple and often accurate for short forecasting horizons.
 * We should always compute them as a **benchmark** for comparison against other more complex forecasting models.
 
-1. **No seasonality**: Use lastest value to forecast "all" future forecasting values. `F_t+k = yt`
-2. **With seasonality**: Use last season's value to forecast future season. `F_t+k = y_t-M+k`
+1. **No seasonality**: Use latest value to forecast "all" future forecasting values. `F_t+k = yt`
+2. **With seasonality**: Use value of latest season to forecast future season. `F_t+k = y_t-M+k`
 
-### Evaluation
+#### Evaluation
 
 It is recommended to use **charts** to evaluate how the model performs on both *training period* and *validation period*.
-1. Actual values and forecasting values vs time periods(training + validation)
-2. Forecasting errors vs time periods
+1. Line Chart: Actual values and forecasting values vs time periods(training + validation).
+2. Line Chart: Forecasting errors vs time periods.
+3. Histogram: Frequency of each error range; more info on forecast errors pf different sign and size.
+
+#### Any error that is less preferable?
+
+1. **One large** error vs **Many small** errors
+2. Errors **above/below threshold**
+3. **Positive** errors(under-forecast) vs **Negative** errors(over-forecast)
+
+#### Common Predictive Accuracy Measures
+
+1. **et**: Average error; Values with different sign will offset each other.
+2. **|et|**: Mean Absolute Error(MAE) or Mean Absolute Deviation(MAD); Doesn't matter sign, only care about size.
+3. **(et)^2**: Mean Squared Error(MSE); Larger error gets larger penalty.
+4. **((et)^2)^(1/2)**: Root Mean Squared Error(RMSE).
+5. **|et/yt|x100%**: Mean Absolute Percentage Error(MAPE); Can't apply to series with actual value equals to 0.
+
+<br>
+
+<h3 id="timeseries">ii. Time Series</h3>
+
+<h3 id="MA">a. Moving Average(MA)</h3>
+
+* Assumption: Demand is stable(no trend and seasonality)
+* Usage: 
+    1. Time Series Visualization: to identify time series components by supressing seasonality and noise.
+    2. Forecasting: to forecast time series that do not have trend and seasonality.
+* Key Concepts: width of window(take average of how many time periods?)
+
+#### Two Types of Windows
+
+1. **Centered Moving Average**: for time series visualization; based on a window centered around time t.
+```
+Example:
+
+Odd width (e.g. w=5):
+MA_t = (y_t-2 + y_t-1 + y_t + y_t+1 + y_t+2) / 5
+
+Even width (e.g. w=4):
+MA_t = 1/2 X ((y_t-2 + y_t-1 + y_t + y_t+1) / 4 + (y_t-1 + y_t + y_t+1 + y_t+2) / 4)
+```
+
+2. **Trailing Moving Average**: for forecasting; based on a window from time t and backwards.
+```
+Example:
+
+Since we cannot use data in validation period to forecast itself, the forecasted value in the validation period will be the last w time periods to take average.
+y_t+1, y_t+2, ... = (y_t-w-1 + ... + y_t-1 + y_t) / w
+```
+
+#### Width of Window
+
+Can decide the degree of smoothing(How much smoothing do we want?).
+1. Longest window(over-smoothing):
+    * w = length of training period
+    * MA = average of entire series
+2. Shortest window(under-smoothing):
+    * w = 1
+    * MA = naive forecast
+
+<br>
+
+
+
 
 
 
