@@ -162,7 +162,8 @@ MA_t = 1/2 X ((y_t-2 + y_t-1 + y_t + y_t+1) / 4 + (y_t-1 + y_t + y_t+1 + y_t+2) 
 ```
 Example:
 
-Since we cannot use data in validation period to forecast itself, the forecasted value in the validation period will be the last w time periods to take average.
+Since we cannot use data in validation period to forecast itself, 
+the forecasted value in the validation period will be the average of last w time periods in training period.
 y_t+1, y_t+2, ... = (y_t-w-1 + ... + y_t-1 + y_t) / w
 ```
 
