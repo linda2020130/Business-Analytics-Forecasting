@@ -8,7 +8,7 @@
       1. [Naive Forecast](#naive)
       2. [Time Series](#timeseries)
           1. [Moving Average(MA)](#MA)
-          2. Autoregression(AR)
+          2. [Autoregressive(AR)](#AR)
           3. Autoregressive Moving Average(ARMA)
           4. Autoregressive Integrated Moving Average(ARIMA)
       3. Exponential Smoothing
@@ -81,6 +81,7 @@ yt = Level * Trend * Seasonality * Noise
         2. Too long: scenario/situation may change a lot when time span is long.
 5. **Differencing**:
     * Difference of two time periods in the time series; to remove trend and/or seasonality from a series.
+    * Note that differencing is often used as a pre-processing step before applying a forecasting model to a series.
     * Types of Differencing:
         1. **Lag-1 differencing**(De-Trending): useful for removing trend. (May apply twice if the trend is exponential)
         2. **Lag-M differencing**(Deseasonalizing): useful for removing seasonality with M seasons. 
@@ -169,7 +170,7 @@ y_t+1, y_t+2, ... = (y_t-w-1 + ... + y_t-1 + y_t) / w
 
 #### Width of Window
 
-Can decide the degree of smoothing(How much smoothing do we want?).
+To decide the degree of smoothing(How much smoothing do we want?).
 1. Longest window(over-smoothing):
     * w = length of training period
     * MA = average of entire series
@@ -177,10 +178,13 @@ Can decide the degree of smoothing(How much smoothing do we want?).
     * w = 1
     * MA = naive forecast
 
-<br>
+<h3 id="AR">b. Autoregressive(AR)</h3>
 
-
-
+* Assumption: Demand is stable(no trend/seasonality)
+* Usage:
+    1. Forecasting: to forecast time series that do not have trend and seasonality.
+    2. Second-layer model: to capture autocorrelation by constructing a second-layer forecasting model for forecast errors.
+* Key Concepts: order(p)
 
 
 
