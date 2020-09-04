@@ -24,6 +24,7 @@
 <br>
 
 <h2 id="components">1. Time Series Components</h2>
+
 1. Systematic part:
     * **level**: the average value of the series
     * **trend**: change in the series from one period to the next
