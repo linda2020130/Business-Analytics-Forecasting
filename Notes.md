@@ -119,7 +119,7 @@ yt = Level * Trend * Seasonality * Noise
 It is recommended to use **charts** to evaluate how the model performs on both *training period* and *validation period*.
 1. Line Chart: Actual values and forecasting values vs time periods(training + validation).
 2. Line Chart: Forecasting errors vs time periods.
-3. Histogram: Frequency of each error range; more info on forecast errors pf different sign and size.
+3. Histogram: Frequency of each error range; more info on forecast errors of different sign and size.
 
 #### Any error that is less preferable?
 
