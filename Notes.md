@@ -4,7 +4,7 @@
   2. [Visualizing Time Series](#visualizing)
   3. [Data Preprocessing](#preprocessing)
   4. [Data Partitioning](#partitioning)
-  5. [Forecasting and Evaluation](#forecasting)
+  5. [Forecasting Models](#forecasting)
       1. [Naive Forecast](#naive)
       2. [Time Series](#timeseries)
           1. [Moving Average(MA)](#MA)
@@ -19,6 +19,7 @@
           1. Linear Regression
           2. Exponential Regression
           3. Polynomial Regression
+  6. [Evaluation](#evaluation)
 
 <br>
 <br>
@@ -104,37 +105,17 @@ yt = Level * Trend * Seasonality * Noise
 
 <br >
 
-<h2 id="forecasting">5. Forecasting and Evaluation</h2>
+<h2 id="forecasting">5. Forecasting</h2>
 
 <h3 id="naive">i. Naive Forecast</h3>
 
-* Naive Forecast is simple and often accurate for short forecasting horizons.
-* We should always compute them as a **benchmark** for comparison against other more complex forecasting models.
-
-1. **No seasonality**: Use latest value to forecast "all" future forecasting values. `F_t+k = yt`
-2. **With seasonality**: Use value of latest season to forecast future season. `F_t+k = y_t-M+k`
-
-#### Evaluation
-
-It is recommended to use **charts** to evaluate how the model performs on both *training period* and *validation period*.
-1. Line Chart: Actual values and forecasting values vs time periods(training + validation).
-2. Line Chart: Forecasting errors vs time periods.
-3. Histogram: Frequency of each error range; more info on forecast errors of different sign and size.
-
-#### Any error that is less preferable?
-
-1. **One large** error vs **Many small** errors
-2. Errors **above/below threshold**
-3. **Positive** errors(under-forecast) vs **Negative** errors(over-forecast)
-
-#### Common Predictive Accuracy Measures
-
-1. **et**: Average error; Values with different sign will offset each other.
-2. **|et|**: Mean Absolute Error(MAE) or Mean Absolute Deviation(MAD); Doesn't matter sign, only care about size.
-3. **(et)^2**: Mean Squared Error(MSE); Larger error gets larger penalty.
-4. **((et)^2)^(1/2)**: Root Mean Squared Error(RMSE).
-5. **|et/yt|x100%**: Mean Absolute Percentage Error(MAPE); Can't apply to series with actual value equals to 0.
-
+* Usage:
+  1. **Short forecasting horizons**: Naive Forecast is simple and often accurate for this scenario.
+  2. **Benchmark**: We should always compute them for comparison against other more complex forecasting models.
+* Formula:
+  1. **No seasonality**: Use latest value to forecast "all" future forecasting values. `F_t+k = yt`
+  2. **With seasonality**: Use value of latest season to forecast future season. `F_t+k = y_t-M+k`
+  
 <br>
 
 <h3 id="timeseries">ii. Time Series</h3>
@@ -143,13 +124,13 @@ It is recommended to use **charts** to evaluate how the model performs on both *
 
 * Assumption: Demand is stable(no trend and seasonality)
 * Usage: 
-    1. Time Series Visualization: to identify time series components by supressing seasonality and noise.
-    2. Forecasting: to forecast time series that do not have trend and seasonality.
-* Key Concepts: width of window(take average of how many time periods?)
+    1. **Time Series Visualization**: to identify time series components by supressing seasonality and noise.
+    2. **Forecasting**: to forecast time series that do not have trend and seasonality.
+* Argument: Width of window(take average of how many time periods?)
 
 #### Two Types of Windows
 
-1. **Centered Moving Average**: for time series visualization; based on a window centered around time t.
+1. **Centered Moving Average**: for *time series visualization*; based on a window centered around time t.
 ```
 Example:
 
@@ -160,18 +141,19 @@ Even width (e.g. w=4):
 MA_t = 1/2 X ((y_t-2 + y_t-1 + y_t + y_t+1) / 4 + (y_t-1 + y_t + y_t+1 + y_t+2) / 4)
 ```
 
-2. **Trailing Moving Average**: for forecasting; based on a window from time t and backwards.
+2. **Trailing Moving Average**: for *forecasting*; based on a window from time t and backwards.
 ```
-Example:
-
 Since we cannot use data in validation period to forecast itself, 
 the forecasted value in the validation period will be the average of last w time periods in training period.
+
+Example:
+
 y_t+1, y_t+2, ... = (y_t-w-1 + ... + y_t-1 + y_t) / w
 ```
 
 #### Width of Window
 
-To decide the degree of smoothing(How much smoothing do we want?).
+To decide the degree of smoothing (How much smoothing do we want?).
 1. Longest window(over-smoothing):
     * w = length of training period
     * MA = average of entire series
@@ -179,15 +161,81 @@ To decide the degree of smoothing(How much smoothing do we want?).
     * w = 1
     * MA = naive forecast
 
+<br>
+
 <h3 id="AR">b. Autoregressive(AR)</h3>
 
 * Assumption: Demand is stable(no trend/seasonality)
 * Usage:
-    1. Forecasting: to forecast time series that do not have trend and seasonality.
-    2. Second-layer model: to capture autocorrelation by constructing a second-layer forecasting model for forecast errors.
-* Key Concepts: order(p)
+    1. **Forecasting**: to forecast time series that do not have trend and seasonality.
+    2. **Second-layer model**: to capture autocorrelation by constructing a second-layer forecasting model for forecast errors.
+* Argument: Order(p)
+* Formula: 
+```
+We forecast the variable of interest (e.g. y_t or e_t)using a linear combination of past p values of the variable. 
+The term autoregression indicates that it is a regression of the variable against itself.
+Therefore, AR(p) only useful for improving forecasts in the next p periods.
+
+y_t = B_0 + B_1 * y_t-1 + B_2 * y_t-2 + ... + B_p  * y_t-p + E_t
+
+B_0, B_1, ... , B_p: parameters of the model
+E_t: white noise
+```
+
+#### Two-Step Model
+
+1. Use *any forecasting model* (e.g. regression, smoothing, ...) to generate F_t
+2. Use *AR model* to generate e_t (input actual errors and output forecasted errors) --> Usually use AR(1) is good enough
+3. Combine the two to get an improved forecast `F*_t+1 = F_t+1 + e_t+1`
+
+#### How to choose p?
+
+Compute the linear correlation between the series and a lagged version of the series. (e.g. Lag-1: Take last period as current period)
+Compute the autocorrelation of the errors can be used to check if trend and seasonality are captured correctly.
+(e.g. strong positive lag-1 in autocorrelation of errors --> trend wasn't captured)
+
+```
+r = [(X1 - avg_X)(Y1 - avg_Y) + ... + (Xn - avg_X)(Yn - avg_Y)] 
+    / {[(X1 - avg_X)^2 + ... + (Xn - avg_X)^2]^(1/2) * [(Y1 - avg_Y)^2 + ... + (Yn - avg_Y)^2]^(1/2)}
+```
+
+1. Strong autocorrelation (positive or negative): can identify a cyclical pattern 
+  * e.g. strong autocorrelation at lag-12, lag-24, lag-36 in monthly data --> an annual seasonality
+2. Positive lag-1 autocorrelation (stickness)
+  * Series with strong linear trend tends to have strong lag-1 autocorrelation
+3. Negative lag-1 autocorrelation (swings)
+  * High value comes before and after low value and vice versa.
+
+<br>
+
+<h3 id="ARMA">c. Autoregressive Moving Average(ARMA)</h3>
+
+* Assumption: Demand is stable(no trend and seasonality)
+* Usage: 
+* Argument: Order(p, q)
 
 
 
 
+<br>
 
+<h2 id="evaluation">6. Evaluation</h2>
+
+It is recommended to use **charts** to evaluate how the model performs on both *training period* and *validation period*.
+1. Line Chart: Actual values and forecasting values vs time periods(training + validation).
+2. Line Chart: Forecasting errors vs time periods.
+3. Histogram: Frequency of each error range; more info on forecast errors of different sign and size.
+
+### Any error that is less preferable?
+
+1. **One large** error vs **Many small** errors
+2. Errors **above/below threshold**
+3. **Positive** errors(under-forecast) vs **Negative** errors(over-forecast)
+
+### Common Predictive Accuracy Measures
+
+1. **et**: Average error; Values with different sign will offset each other.
+2. **|et|**: Mean Absolute Error(MAE) or Mean Absolute Deviation(MAD); Doesn't matter sign, only care about size.
+3. **(et)^2**: Mean Squared Error(MSE); Larger error gets larger penalty.
+4. **((et)^2)^(1/2)**: Root Mean Squared Error(RMSE).
+5. **|et/yt|x100%**: Mean Absolute Percentage Error(MAPE); Can't apply to series with actual value equals to 0.
