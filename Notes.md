@@ -146,10 +146,10 @@ y_t = μ + θ_1 * ε_t-1 + θ_2 * ε_t-2 + ... + θ_q * ε_t-q + ε_t
 Example:
 
 Odd width (e.g. w=5):
-MA_t = θ_2 * y_t-2 + θ_1 * y_t-1 + θ_0 * y_t + θ_-1 * y_t+1 + θ_-2 * y_t+2
+MA_t = μ + θ_2 * y_t-2 + θ_1 * y_t-1 + θ_0 * y_t + θ_-1 * y_t+1 + θ_-2 * y_t+2
 
 Even width (e.g. w=4):
-MA_t = 1/2 X [(θ_2 * y_t-2 + θ_1 * y_t-1 + θ_0 * y_t + θ_-1 * y_t+1) + (θ_1 * y_t-1 + θ_0 * y_t + θ_-1 * y_t+1 + θ_-2 * y_t+2)]
+MA_t = μ + 1/2 X [(θ_2 * y_t-2 + θ_1 * y_t-1 + θ_0 * y_t + θ_-1 * y_t+1) + (θ_1 * y_t-1 + θ_0 * y_t + θ_-1 * y_t+1 + θ_-2 * y_t+2)]
 ```
 
 2. **Trailing Moving Average**: for *forecasting*; based on a window from time t and backwards.
