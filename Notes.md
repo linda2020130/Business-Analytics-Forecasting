@@ -122,11 +122,22 @@ yt = Level * Trend * Seasonality * Noise
 
 <h3 id="MA">a. Moving Average(MA)</h3>
 
+> The label "moving average" is technically incorrect since the MA coefficients may be negative and may not sum to unity. This label is used by convention.
+
 * Assumption: Demand is stable(no trend and seasonality)
 * Usage: 
     1. **Time Series Visualization**: to identify time series components by supressing seasonality and noise.
     2. **Forecasting**: to forecast time series that do not have trend and seasonality.
-* Argument: Width of window(take average of how many time periods?)
+    3. **Second-layer model**: to forecast errors, usually in ARMA or ARIMA model.
+* Argument: Order(q) --> Width of window
+* Formula: 
+```
+y_t = μ + θ_1 * ε_t-1 + θ_2 * ε_t-2 + ... + θ_q * ε_t-q + ε_t
+
+μ: constant
+θ_1, θ_2, ... , θ_q: parameters of the model (can be negative and need not sum to unity!!!)
+ε_t: white noise
+```
 
 #### Two Types of Windows
 
@@ -135,10 +146,10 @@ yt = Level * Trend * Seasonality * Noise
 Example:
 
 Odd width (e.g. w=5):
-MA_t = (y_t-2 + y_t-1 + y_t + y_t+1 + y_t+2) / 5
+MA_t = θ_2 * y_t-2 + θ_1 * y_t-1 + θ_0 * y_t + θ_-1 * y_t+1 + θ_-2 * y_t+2
 
 Even width (e.g. w=4):
-MA_t = 1/2 X ((y_t-2 + y_t-1 + y_t + y_t+1) / 4 + (y_t-1 + y_t + y_t+1 + y_t+2) / 4)
+MA_t = 1/2 X [(θ_2 * y_t-2 + θ_1 * y_t-1 + θ_0 * y_t + θ_-1 * y_t+1) + (θ_1 * y_t-1 + θ_0 * y_t + θ_-1 * y_t+1 + θ_-2 * y_t+2)]
 ```
 
 2. **Trailing Moving Average**: for *forecasting*; based on a window from time t and backwards.
@@ -148,7 +159,7 @@ the forecasted value in the validation period will be the average of last w time
 
 Example:
 
-y_t+1, y_t+2, ... = (y_t-w-1 + ... + y_t-1 + y_t) / w
+y_t+1, y_t+2, ... = θ_w+1 * y_t-w-1 + ... + θ_1 * y_t-1 + θ_0 * y_t
 ```
 
 #### Width of Window
@@ -168,7 +179,7 @@ To decide the degree of smoothing (How much smoothing do we want?).
 * Assumption: Demand is stable(no trend/seasonality)
 * Usage:
     1. **Forecasting**: to forecast time series that do not have trend and seasonality.
-    2. **Second-layer model**: to capture autocorrelation by constructing a second-layer forecasting model for forecast errors.
+    2. **Second-layer model**: to capture autocorrelation by constructing a second-layer forecasting model to forecast errors.
 * Argument: Order(p)
 * Formula: 
 ```
@@ -176,10 +187,11 @@ We forecast the variable of interest (e.g. y_t or e_t)using a linear combination
 The term autoregression indicates that it is a regression of the variable against itself.
 Therefore, AR(p) only useful for improving forecasts in the next p periods.
 
-y_t = B_0 + B_1 * y_t-1 + B_2 * y_t-2 + ... + B_p  * y_t-p + E_t
+y_t = C + β_1 * y_t-1 + β_2 * y_t-2 + ... + β_p * y_t-p + ε_t
 
-B_0, B_1, ... , B_p: parameters of the model
-E_t: white noise
+C: constant
+β_1, β_2, ... , β_p: parameters of the model
+ε_t: white noise
 ```
 
 #### Two-Step Model
