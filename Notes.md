@@ -9,7 +9,7 @@
       2. [Time Series](#timeseries)
           1. [Moving Average(MA)](#MA)
           2. [Autoregressive(AR)](#AR)
-          3. Autoregressive Moving Average(ARMA)
+          3. [Autoregressive Moving Average(ARMA)](#ARMA)
           4. Autoregressive Integrated Moving Average(ARIMA)
       3. Exponential Smoothing
           1. Simple Exponential Smoothing(SES)
@@ -134,9 +134,9 @@ yt = Level * Trend * Seasonality * Noise
 ```
 y_t = μ + θ_1 * ε_t-1 + θ_2 * ε_t-2 + ... + θ_q * ε_t-q + ε_t
 
-μ: constant
+μ: average of the series
 θ_1, θ_2, ... , θ_q: parameters of the model (can be negative and need not sum to unity!!!)
-ε_t: white noise
+ε_t, ε_t-1, ..., ε_t-q: white noise error terms
 ```
 
 #### Two Types of Windows
@@ -176,6 +176,9 @@ To decide the degree of smoothing (How much smoothing do we want?).
 
 <h3 id="AR">b. Autoregressive(AR)</h3>
 
+> We forecast the variable of interest (e.g. y_t or e_t)using a linear combination of past p values of the variable. 
+The term autoregression indicates that it is a regression of the variable against itself.
+
 * Assumption: Demand is stable(no trend/seasonality)
 * Usage:
     1. **Forecasting**: to forecast time series that do not have trend and seasonality.
@@ -183,9 +186,7 @@ To decide the degree of smoothing (How much smoothing do we want?).
 * Argument: Order(p)
 * Formula: 
 ```
-We forecast the variable of interest (e.g. y_t or e_t)using a linear combination of past p values of the variable. 
-The term autoregression indicates that it is a regression of the variable against itself.
-Therefore, AR(p) only useful for improving forecasts in the next p periods.
+AR(p) only useful for improving forecasts in the next p periods.
 
 y_t = C + β_1 * y_t-1 + β_2 * y_t-2 + ... + β_p * y_t-p + ε_t
 
