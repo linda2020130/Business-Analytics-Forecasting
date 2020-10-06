@@ -39,14 +39,14 @@
 ```
 yt = Level + Trend + Seasonality + Noise
 ```
-=> vary by a constant amount
+--> vary by a constant amount
 
 
 * A time series with *__multiplicative components__* can be written as:
 ```
 yt = Level * Trend * Seasonality * Noise
 ```
-=> vary by a percentage
+--> vary by a percentage
 
 <br>
 
