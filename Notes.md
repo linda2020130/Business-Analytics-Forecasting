@@ -223,9 +223,20 @@ r = [(X1 - avg_X)(Y1 - avg_Y) + ... + (Xn - avg_X)(Yn - avg_Y)]
 
 <h3 id="ARMA">c. Autoregressive Moving Average(ARMA)</h3>
 
+> The ARMA model is a tool for predicting future values in this series. The AR part involves regressing the variable on its own lagged (i.e., past) values. The MA part involves modeling the error term as a linear combination of error terms occurring contemporaneously and at various times in the past.
+
 * Assumption: Demand is stable(no trend and seasonality)
 * Usage: 
-* Argument: Order(p, q)
+    1. **Forecasting**: to forecast time series that do not have trend and seasonality.
+* Argument: Order(p, q) --> p for AR, q for MA
+* Formula:
+```
+y_t = C + ε_t + (β_1 * y_t-1 + β_2 * y_t-2 + ... + β_p * y_t-p) + (θ_1 * ε_t-1 + θ_2 * ε_t-2 + ... + θ_q * ε_t-q)
+
+C: constant
+β_1, β_2, ... , β_p, θ_1, θ_2, ... , θ_q: parameters of the model(can be negative and need not sum to unity!!!)
+ε_t, ε_t-1, ..., ε_t-q: white noise error terms
+```
 
 
 
