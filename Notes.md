@@ -6,19 +6,16 @@
   4. [Data Partitioning](#partitioning)
   5. [Forecasting Models](#forecasting)
       1. [Naive Forecast](#naive)
-      2. [Time Series](#timeseries)
+      2. [Regression](#regression)
           1. [Moving Average(MA)](#MA)
           2. [Autoregressive(AR)](#AR)
           3. [Autoregressive Moving Average(ARMA)](#ARMA)
-          4. Autoregressive Integrated Moving Average(ARIMA)
+          4. [Autoregressive Integrated Moving Average(ARIMA)](#ARIMA)
+          5. Others(Linear/Exponential/Polynomial)
       3. Exponential Smoothing
           1. Simple Exponential Smoothing(SES)
           2. Holt's Exponential Smoothing
           3. Holt-Winter's Exponential Smoothing
-      4. Regression
-          1. Linear Regression
-          2. Exponential Regression
-          3. Polynomial Regression
   6. [Evaluation](#evaluation)
 
 <br>
@@ -118,7 +115,7 @@ yt = Level * Trend * Seasonality * Noise
   
 <br>
 
-<h3 id="timeseries">ii. Time Series</h3>
+<h3 id="regression">ii. Regression</h3>
 
 <h3 id="MA">a. Moving Average(MA)</h3>
 
@@ -237,6 +234,10 @@ C: constant
 β_1, β_2, ... , β_p, θ_1, θ_2, ... , θ_q: parameters of the model(can be negative and need not sum to unity!!!)
 ε_t, ε_t-1, ..., ε_t-q: white noise error terms
 ```
+
+<br>
+
+<h3 id="ARIMA">c. Autoregressive Integrated Moving Average(ARIMA)</h3>
 
 
 
