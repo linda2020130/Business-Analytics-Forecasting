@@ -198,24 +198,6 @@ C: constant
 2. Use *AR model* to generate e_t (input actual errors and output forecasted errors) --> Usually use AR(1) is good enough
 3. Combine the two to get an improved forecast `F*_t+1 = F_t+1 + e_t+1`
 
-#### How to choose p?
-
-Compute the linear correlation between the series and a lagged version of the series. (e.g. Lag-1: Take last period as current period)
-Compute the autocorrelation of the errors can be used to check if trend and seasonality are captured correctly.
-(e.g. strong positive lag-1 in autocorrelation of errors --> trend wasn't captured)
-
-```
-r = [(X1 - avg_X)(Y1 - avg_Y) + ... + (Xn - avg_X)(Yn - avg_Y)] 
-    / {[(X1 - avg_X)^2 + ... + (Xn - avg_X)^2]^(1/2) * [(Y1 - avg_Y)^2 + ... + (Yn - avg_Y)^2]^(1/2)}
-```
-
-1. Strong autocorrelation (positive or negative): can identify a cyclical pattern 
-  * e.g. strong autocorrelation at lag-12, lag-24, lag-36 in monthly data --> an annual seasonality
-2. Positive lag-1 autocorrelation (stickness)
-  * Series with strong linear trend tends to have strong lag-1 autocorrelation
-3. Negative lag-1 autocorrelation (swings)
-  * High value comes before and after low value and vice versa.
-
 <br>
 
 <h3 id="ARMA">c. Autoregressive Moving Average(ARMA)</h3>
@@ -239,6 +221,61 @@ C: constant
 
 <h3 id="ARIMA">c. Autoregressive Integrated Moving Average(ARIMA)</h3>
 
+> The ARIMA model can be thought as a particular case of an ARMA(p+d,q) process having the autoregressive polynomial with d unit roots.
+
+* Assumption: Demand can be stable or unstable but can be applied differencing to eliminate the non-stationarity.
+* Usage:
+    1. **Forecasting**: to forecast time series where data show evidence of non-stationarity.
+* Argument: Order(p, d, q) --> p for AR, d for differencing, q for MA
+* Formula:
+```
+[1 - (β_1 * L + β_2 * L^2 + ... + β_p * L^p)] * (1 - L)^d * y_t = [1 + (θ_1 * L + θ_2 * L^2 + ... + θ_q * L^q)] * ε_t
+
+L: lag operator --> L * y_t = y_t-1
+d: d-order differencing
+β_i: autoregression parameter
+θ_i: moving average parameter
+```
+
+#### Autocorrelation
+
+Autocorrelation is the linear correlation between the series and a lagged version of the series(e.g. Lag-1: Take last period as current period).
+Computing the autocorrelation of the errors can be used to check if trend and seasonality are captured correctly.
+(e.g. strong positive lag-1 in autocorrelation of errors --> trend wasn't captured)
+
+```
+r = [(X1 - avg_X)(Y1 - avg_Y) + ... + (Xn - avg_X)(Yn - avg_Y)] 
+    / {[(X1 - avg_X)^2 + ... + (Xn - avg_X)^2]^(1/2) * [(Y1 - avg_Y)^2 + ... + (Yn - avg_Y)^2]^(1/2)}
+```
+
+1. Strong autocorrelation (positive or negative): can identify a cyclical pattern 
+  * e.g. strong autocorrelation at lag-12, lag-24, lag-36 in monthly data --> an annual seasonality
+2. Positive lag-1 autocorrelation (stickness)
+  * Series with strong linear trend tends to have strong lag-1 autocorrelation
+3. Negative lag-1 autocorrelation (swings)
+  * High value comes before and after low value and vice versa.
+  
+#### Choosing d (Differencing)
+
+1. Rule 1: High positive autocorrelation at lag-k where k is large --> Need larger d (Be careful of overdifferencing!)
+2. Rule 2: Autocorrelation at lag-1 is 0 or negative or autocorrelation at all lags are small and patternless --> No more differencing
+3. Rule 3: Optimal d usually makes RMSE the smallest
+4. Rule 4: 
+  * d=0 --> original series is stationary
+  * d=1 --> original series has a constant average trend
+  * d=2 --> original series has a time-varying trend
+
+#### Choosing p, q (AR, MA)
+
+Use **ACF**(*Autocorrelation Function*) and **PACF**(*Partial Autocorrelation Function*) to decide values of p and q. The **partial autocorrelation** at lag-k is the autocorrelation between y_t and y_t-k that is not accounted for by lag-1 through lag-k-1.
+
+1. ACF plot: a bar chart of the correlation coefficients between the time series and the lags of itself.
+  * Rule-of-thumb for choosing q: ACF plot has a sharp peak or autocorrelation at lag-1 is negative --> Consider adding a MA term to the model
+  * The lag at which the ACF cuts off is the indicated number of MA terms
+2. PACF plot: a bar chart of the partial correlation coefficients between the time series and the lags of itself.
+  * Rule-of-thumb for choosing p: PACF plot has a sharp peak or autocorrelation at lag-1 is positive --> Consider adding an AR term to the model
+  * The lag at which the PACF cuts off is the indicated number of AR terms
+  
 
 
 
