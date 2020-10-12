@@ -22,7 +22,7 @@
 <br>
 <br>
 
-<h2 id="procedure>1. Time Series Analysis and Forecasting</h2>
+<h2 id="procedure">1. Time Series Analysis and Forecasting Procedure</h2>
         
 Step 1 : Get time series data
 Step 2 : Partition into training and validation
