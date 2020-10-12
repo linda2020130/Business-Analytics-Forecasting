@@ -1,27 +1,38 @@
-# Data Analysis in Time Series
+# Data Analysis and Forecasting in Time Series
 
-  1. [Time Series Components](#components)
-  2. [Visualizing Time Series](#visualizing)
-  3. [Data Preprocessing](#preprocessing)
-  4. [Data Partitioning](#partitioning)
-  5. [Forecasting Models](#forecasting)
+  1. [Time Series Analysis and Forecasting Procedure](#procedure)
+  2. [Time Series Components](#components)
+  3. [Visualizing Time Series](#visualizing)
+  4. [Data Preprocessing](#preprocessing)
+  5. [Data Partitioning](#partitioning)
+  6. [Forecasting Models](#forecasting)
       1. [Naive Forecast](#naive)
       2. [Regression](#regression)
           1. [Moving Average(MA)](#MA)
           2. [Autoregressive(AR)](#AR)
           3. [Autoregressive Moving Average(ARMA)](#ARMA)
           4. [Autoregressive Integrated Moving Average(ARIMA)](#ARIMA)
-          5. Others(Linear/Exponential/Polynomial)
+          5. [Others(Linear/Exponential/Polynomial)](#others)
       3. Exponential Smoothing
           1. Simple Exponential Smoothing(SES)
           2. Holt's Exponential Smoothing
           3. Holt-Winter's Exponential Smoothing
-  6. [Evaluation](#evaluation)
+  7. [Evaluation](#evaluation)
 
 <br>
 <br>
 
-<h2 id="components">1. Time Series Components</h2>
+<h2 id="procedure>1. Time Series Analysis and Forecasting</h2>
+        
+Step 1 : Get time series data
+Step 2 : Partition into training and validation
+Step 3 : Estimate the model on training (visualizing --> preprocessing --> modeling)
+Step 4 : Evaluate predictive performance
+Step 5 : Generate forecasts for future periods
+
+<br>
+
+<h2 id="components">2. Time Series Components</h2>
 
 1. Systematic part:
     * **level**: the average value of the series
@@ -47,7 +58,7 @@ yt = Level * Trend * Seasonality * Noise
 
 <br>
 
-<h2 id="visualizing">2. Visualizing Time Series</h2>
+<h2 id="visualizing">3. Visualizing Time Series</h2>
 
 1. **Simplest form**: A line chart of the series **values** `y1, y2, ...` over **time** `t = 1, 2, ...` with temporal labels (e.g. calendar date) on the horizontal axis.
 2. **Zooming in**: To a **shorter** period within thr series can reveal patterns.
@@ -61,7 +72,7 @@ yt = Level * Trend * Seasonality * Noise
 
 <br >
 
-<h2 id="preprocessing">3. Data Preprocessing</h2>
+<h2 id="preprocessing">4. Data Preprocessing</h2>
 
 1. **Missing values**: 
     * Imputation approach:
@@ -88,7 +99,7 @@ yt = Level * Trend * Seasonality * Noise
 
 <br>
 
-<h2 id="partitioning">4. Data Partitioning</h2>
+<h2 id="partitioning">5. Data Partitioning</h2>
 
 1. Split the data into **training** `t = 1, 2, ..., n` and **validation** `t = n+1, n+2, ...`sets to avoid overfitting.
 2. Select the model with minimal error on the validation set.
@@ -102,7 +113,7 @@ yt = Level * Trend * Seasonality * Noise
 
 <br >
 
-<h2 id="forecasting">5. Forecasting</h2>
+<h2 id="forecasting">6. Forecasting</h2>
 
 <h3 id="naive">i. Naive Forecast</h3>
 
@@ -219,7 +230,7 @@ C: constant
 
 <br>
 
-<h3 id="ARIMA">c. Autoregressive Integrated Moving Average(ARIMA)</h3>
+<h3 id="ARIMA">d. Autoregressive Integrated Moving Average(ARIMA)</h3>
 
 > The ARIMA model can be thought as a particular case of an ARMA(p+d,q) process having the autoregressive polynomial with d unit roots.
 
@@ -269,22 +280,30 @@ r = [(X1 - avg_X)(Y1 - avg_Y) + ... + (Xn - avg_X)(Yn - avg_Y)]
 
 Use **ACF**(*Autocorrelation Function*) and **PACF**(*Partial Autocorrelation Function*) to decide values of p and q. The **partial autocorrelation** at lag-k is the autocorrelation between y_t and y_t-k that is not accounted for by lag-1 through lag-k-1.
 
-1. ACF plot: a bar chart of the correlation coefficients between the time series and the lags of itself.
+1. **ACF plot**: a bar chart of the correlation coefficients between the time series and the lags of itself.
   * Rule-of-thumb for choosing **q**: ACF plot has a sharp peak or autocorrelation at lag-1 is negative --> Consider adding a **MA** term to the model
   * The lag at which the ACF cuts off is the indicated number of MA terms
-2. PACF plot: a bar chart of the partial correlation coefficients between the time series and the lags of itself.
+2. **PACF plot**: a bar chart of the partial correlation coefficients between the time series and the lags of itself.
   * Rule-of-thumb for choosing **p**: PACF plot has a sharp peak or autocorrelation at lag-1 is positive --> Consider adding an **AR** term to the model
   * The lag at which the PACF cuts off is the indicated number of AR terms
   
+<br>
 
-
-
-
-
+<h3 id="others">e. Others(Linear/Exponential/Polynomial)<h3>
+  
+* Assumption: Demand needs to be deseasonalized first
+* Usage:
+    1. **Time Series Analysis**: to identify/capture the trend of the time series.
+    2. **Time Series Forecasting**: to forecast time series where data show evidence of trend.
+* Argument: predictor(s) is t or functions of t
+* Formula:
+  * **Linear**: `y_t = β_0 + β_1 * t + ε`
+  * **Exponential**: `y_t = β_0 * e^(β_1 * t) * ε` --> `Log(y_t) = β_0 + β_1 * t + ε`
+  * **Polynomial**: e.g. `y_t = β_0 + β_1 * t + β_2 * t^2 + ε`
 
 <br>
 
-<h2 id="evaluation">6. Evaluation</h2>
+<h2 id="evaluation">7. Evaluation</h2>
 
 It is recommended to use **charts** to evaluate how the model performs on both *training period* and *validation period*.
 1. Line Chart: Actual values and forecasting values vs time periods(training + validation).
