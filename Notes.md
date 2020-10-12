@@ -24,11 +24,11 @@
 
 <h2 id="procedure">1. Time Series Analysis and Forecasting Procedure</h2>
         
-Step 1 : Get time series data
-Step 2 : Partition into training and validation
-Step 3 : Estimate the model on training (visualizing --> preprocessing --> modeling)
-Step 4 : Evaluate predictive performance
-Step 5 : Generate forecasts for future periods
+* Step 1 : Get time series data
+* Step 2 : Partition into training and validation
+* Step 3 : Estimate the model on training (visualizing --> preprocessing --> modeling)
+* Step 4 : Evaluate predictive performance
+* Step 5 : Generate forecasts for future periods
 
 <br>
 
