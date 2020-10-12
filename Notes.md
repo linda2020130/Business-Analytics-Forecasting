@@ -289,7 +289,7 @@ Use **ACF**(*Autocorrelation Function*) and **PACF**(*Partial Autocorrelation Fu
   
 <br>
 
-<h3 id="others">e. Others(Linear/Exponential/Polynomial)<h3>
+<h3 id="others">e. Others(Linear/Exponential/Polynomial)</h3>
   
 * Assumption: Demand needs to be deseasonalized first
 * Usage:
