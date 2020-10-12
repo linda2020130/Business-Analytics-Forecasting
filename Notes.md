@@ -239,8 +239,8 @@ d: d-order differencing
 
 #### Autocorrelation
 
-Autocorrelation is the linear correlation between the series and a lagged version of the series(e.g. Lag-1: Take last period as current period).
-Computing the autocorrelation of the errors can be used to check if trend and seasonality are captured correctly.
+Autocorrelation is the *linear correlation between **the series** and **a lagged version of itself***(e.g. Lag-1: Take last period as current period).
+Computing the autocorrelation of the errors can be used to *check if trend and seasonality are captured correctly*.
 (e.g. strong positive lag-1 in autocorrelation of errors --> trend wasn't captured)
 
 ```
@@ -270,12 +270,15 @@ r = [(X1 - avg_X)(Y1 - avg_Y) + ... + (Xn - avg_X)(Yn - avg_Y)]
 Use **ACF**(*Autocorrelation Function*) and **PACF**(*Partial Autocorrelation Function*) to decide values of p and q. The **partial autocorrelation** at lag-k is the autocorrelation between y_t and y_t-k that is not accounted for by lag-1 through lag-k-1.
 
 1. ACF plot: a bar chart of the correlation coefficients between the time series and the lags of itself.
-  * Rule-of-thumb for choosing q: ACF plot has a sharp peak or autocorrelation at lag-1 is negative --> Consider adding a MA term to the model
+  * Rule-of-thumb for choosing **q**: ACF plot has a sharp peak or autocorrelation at lag-1 is negative --> Consider adding a **MA** term to the model
   * The lag at which the ACF cuts off is the indicated number of MA terms
 2. PACF plot: a bar chart of the partial correlation coefficients between the time series and the lags of itself.
-  * Rule-of-thumb for choosing p: PACF plot has a sharp peak or autocorrelation at lag-1 is positive --> Consider adding an AR term to the model
+  * Rule-of-thumb for choosing **p**: PACF plot has a sharp peak or autocorrelation at lag-1 is positive --> Consider adding an **AR** term to the model
   * The lag at which the PACF cuts off is the indicated number of AR terms
   
+
+
+
 
 
 
