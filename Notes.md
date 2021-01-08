@@ -13,10 +13,10 @@
           3. [Autoregressive Moving Average(ARMA)](#ARMA)
           4. [Autoregressive Integrated Moving Average(ARIMA)](#ARIMA)
           5. [Others(Linear/Exponential/Polynomial)](#others)
-      3. Exponential Smoothing
-          1. Simple Exponential Smoothing(SES)
-          2. Holt's Exponential Smoothing
-          3. Holt-Winter's Exponential Smoothing
+      3. [Exponential Smoothing](#smoothing)
+          1. [Simple Exponential Smoothing(SES)](#SES)
+          2. [Holt's Exponential Smoothing](#HES)
+          3. [Holt-Winter's Exponential Smoothing](#HWES)
   7. [Evaluation](#evaluation)
 
 <br>
@@ -300,6 +300,107 @@ Use **ACF**(*Autocorrelation Function*) and **PACF**(*Partial Autocorrelation Fu
   * **Linear**: `y_t = β_0 + β_1 * t + ε`
   * **Exponential**: `y_t = β_0 * e^(β_1 * t) * ε` --> `Log(y_t) = β_0 + β_1 * t + ε`
   * **Polynomial**: e.g. `y_t = β_0 + β_1 * t + β_2 * t^2 + ε`
+
+<br>
+
+<h3 id="smoothing">iii. Exponential Smoothing</h3>
+
+<h3 id="SES">a. Simple Exponential Smoothing(SES)</h3>
+
+> Use a weighted average of all previous values to forecast.
+
+* Assumption: Demand is stable(no trend and seasonality, only level and noise)
+* Usage: 
+    1. **Forecasting**: to forecast time series that do not have trend and seasonality.
+* Argument: Smoothing constant α (Larger α means larger portion of value comes from recent data)
+* Formula:
+```
+F_t+1 = L_t = α * y_t + (1 - α) * L_t-1
+            = L_t-1 + α * (y_t - L_t-1)
+            = F_t + α * (y_t - F_t)
+            = F_t + α * ε_t
+
+α: smoothing constant
+0 <= α <= 1
+F_t: forecast value in period t
+y_t: actual value in period t
+ε_t: error in period t
+Possible initialization: F_1 = L_1 = Y_1
+```
+
+#### Select α
+* α = 1  --> under-smoothing
+* α = 0  --> over-smoothing
+1. Typical values = 0.1, 0.2
+2. Trial & Error
+3. Min RMSE or MAPE (Watch out for overfitting!)
+
+<br>
+
+<h3 id="HES">b. Holt's Exponential Smoothing</h3>
+
+> Double Exponential Smoothing.
+
+* Assumption: Demand has level, trend, and noise
+* Usage: 
+    1. **Forecasting**: to forecast time series that do not have seasonality.
+* Argument: Smoothing constant α (controls speed of adjusting the level) and β (controls speed of adjusting the trend) --> Larger α and β means larger portion of value comes from recent data
+* Formula:
+```
+F_t+k = L_t + k * T_t   (Additive Trend)
+F_t+k = L_t * (T_t)^k   (Multiplicative Trend)
+
+The level updating equation (adjust the previous level by adding trend):
+L_t = α * y_t + (1 - α)(L_t-1 + T_t-1)
+The trend updating equation (update previous trend using the difference between the most recent level values):
+T_β = β * (L_t - L_t-1) + (1 - β) * T_t-1
+
+F_t: forecast value in period t
+y_t: actual value in period t
+L_t: level value in period t
+T_t: trend value in period t
+```
+
+#### Select α and β
+1. Typical values = 0.1, 0.2
+2. Min RMSE or MAPE (Watch out for overfitting!)
+
+<br>
+
+<h3 id="HWES">c. Holt-Winter's Exponential Smoothing</h3>
+
+> Triple Exponential Smoothing.
+
+* Assumption: Demand has level, trend, seasonality with M seasons, and noise(unpredictable)
+* Usage: 
+    1. **Forecasting**: to forecast time series.
+* Argument: Smoothing constant α (controls speed of adjusting the level) and β (controls speed of adjusting the trend) and r (controls speed of adjusting the seasonality) --> Larger α, β, r means larger portion of value comes from recent data
+* Formula:
+```
+F_t+k = L_t + k * T_t + S_t+k-M   (Additive Seasonality) --> Diff by a fixed amount
+F_t+k = (L_t + k * T_t) * S_t+k-M   (Multiplicative Seasonality) --> Diff by percentage amount
+
+a. Level:
+L_t = α * (y_t - S_t-M) + (1 - α)(L_t-1 + T_t-1)   --> Additive Trend + Additive Seasonality
+L_t = α * (y_t / S_t-M) + (1 - α)(L_t-1 + T_t-1)   --> Additive Trend + Multiplcative Seasonality
+b. Trend:
+T_β = β * (L_t - L_t-1) + (1 - β) * T_t-1   --> Additive Trend
+c. Seasonality:
+S_t = r * (y_t - L_t) + (1 - r) * S_t-M   --> Additive Seasonality
+S_t = r * (y_t / L_t) + (1 - r) * S_t-M   --> Multiplcative Seasonality
+
+F_t: forecast value in period t
+y_t: actual value in period t
+L_t: level value in period t
+T_t: trend value in period t
+S_t-M: seasonality value in period t with M seasons
+```
+
+#### Applying SES or Holt's ES to TS with trend/seasonality
+
+1. Step 1: Remove trend and/or seasonality
+2. Step 2: Forecast with SES or Holt's ES
+3. Step 3: Add the removed trend and/or seasonality back
 
 <br>
 
